@@ -1,5 +1,6 @@
 <powershell>
 Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+New-NetFirewallRule -DisplayName 'HTTP(S) Inbound' -Direction Inbound -Action Allow -Protocol TCP -LocalPort @('80', '443')
 
 choco install nssm -y
 mkdir /ProgramData/consul/config

@@ -27,6 +27,25 @@ resource "aws_security_group_rule" "rdp" {
   cidr_blocks       = ["0.0.0.0/0"]
 }
 
+resource "aws_security_group_rule" "dotnet" {
+  security_group_id = aws_security_group.primary.id
+  type              = "ingress"
+  from_port         = 5001
+  to_port           = 5001
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+}
+
+resource "aws_security_group_rule" "https" {
+  security_group_id = aws_security_group.primary.id
+  type              = "ingress"
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+}
+
+
 resource "aws_security_group_rule" "nomad_http_ingress" {
   security_group_id = aws_security_group.primary.id
   type              = "ingress"

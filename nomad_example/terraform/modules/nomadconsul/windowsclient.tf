@@ -44,5 +44,6 @@ resource "local_file" "private_key" {
 }
 
 data "external" "decode_password" {
-  program = ["${path.root}/decrypt_password.sh", aws_instance.windows_client[0].password_data, local_file.private_key.filename]
+  count = var.client_count
+  program = ["${path.root}/decrypt_password.sh", aws_instance.windows_client[count.index].password_data, local_file.private_key.filename]
 }
