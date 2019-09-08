@@ -47,7 +47,7 @@ variable "server_count" {
 
 variable "client_count" {
   description = "The number of clients to provision."
-  default     = "3"
+  default     = "5"
 }
 
 variable "name_tag_prefix" {

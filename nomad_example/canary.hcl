@@ -27,12 +27,12 @@ job "eShop" {
       config {
         args = [
           "-c",
-          "cd local/eshop/eShopOnWeb-master/src/web; & 'c:\\Program Files\\dotnet\\dotnet.exe' ef database update -c catalogcontext -p ../Infrastructure/Infrastructure.csproj -s Web.csproj; & 'c:\\Program Files\\dotnet\\dotnet.exe' ef database update -c appidentitydbcontext -p ../Infrastructure/Infrastructure.csproj -s Web.csproj; & 'c:\\Program Files\\dotnet\\dotnet.exe' run"
+          "cd local/eshop/*/src/web; & 'c:\\Program Files\\dotnet\\dotnet.exe' ef database update -c catalogcontext -p ../Infrastructure/Infrastructure.csproj -s Web.csproj; & 'c:\\Program Files\\dotnet\\dotnet.exe' ef database update -c appidentitydbcontext -p ../Infrastructure/Infrastructure.csproj -s Web.csproj; & 'c:\\Program Files\\dotnet\\dotnet.exe' run"
         ]
         command = "powershell.exe"
       }
       service {
-        port = "https"
+        port = "http"
 
         check {
           type     = "http"
@@ -43,8 +43,8 @@ job "eShop" {
       }
       resources {
         network {
-          port "https" {
-          static = 443
+          port "http" {
+          static = 80
           }
         }
       }
