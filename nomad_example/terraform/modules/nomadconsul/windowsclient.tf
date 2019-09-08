@@ -14,7 +14,7 @@ resource "aws_instance" "windows_client" {
   key_name               = var.key_name
   vpc_security_group_ids = [aws_security_group.primary.id]
   subnet_id              = var.subnet_id
-  count                  = 1
+  count                  = var.client_count
   get_password_data      = true
 
   #depends_on             = ["aws_instance.primary"]

@@ -19,3 +19,10 @@ output "client_public_ips" {
   value = aws_instance.client.*.public_ip
 }
 
+output "windows_client_public_ips" {
+  value = aws_instance.windows_client.*.public_ip
+}
+
+output "windows_password" {
+  value = data.external.decode_password.result.decrypted_password
+}

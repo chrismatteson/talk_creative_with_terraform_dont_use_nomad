@@ -3,7 +3,7 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.We
 
 choco install nssm -y
 mkdir /ProgramData/consul/config
-$IPADDRESS=(curl http://instance-data/latest/meta-data/local-ipv4)
+$IPADDRESS=(Invoke-WebRequest -Uri http://instance-data/latest/meta-data/local-ipv4 -UseBasicParsing | Select-Object -ExpandProperty Content)
 $DNSRECURSER=(Get-DnsClientServerAddress | Select-Object –ExpandProperty ServerAddresses -first 1)
 $ConsulConfig = "
 {
@@ -23,16 +23,23 @@ echo $ConsulConfig
 echo $ConsulConfig | Out-File C:\ProgramData\consul\config\config.json -Encoding ASCII
 choco install consul -y -params '-config-file="%ProgramData%\consul\config\config.json"'
 
-$NOMAD_CONFIG="data_dir = `"/ProgramData/nomad/data`"
+choco install dotnetcore-sdk -y
+choco install mssqlserver2014-sqllocaldb -y
+$env:Path += & 'C:\Program Files\dotnet\dotnet.exe'
+
+mkdir /ProgramData/nomad/conf
+$NomadConfig="data_dir = `"/ProgramData/nomad/data`"
 bind_addr = `"$IPADDRESS`"
 name = `"nomad@$IPADDRESS`"
 
 # Enable the client
 client {
   enabled = true
-  options = {
-    driver.java.enable = `"1`"
-    docker.cleanup.image = false
+}
+
+plugin `"raw_exec`" {
+  config {
+    enabled = true
   }
 }
 
@@ -48,7 +55,9 @@ telemetry {
 acl {
   enabled = true
 }"
+choco install nomad -y
 echo $NomadConfig
-echo $NomadConfig | Out-File C:\ProgramData\nomad\conf\nomad.hcl -Encoding ASCII
+echo $NomadConfig | Out-File C:\ProgramData\nomad\conf\client.hcl -Encoding ASCII
+Restart-Service -name nomad
+
 </powershell>
-choco install nomad -y -params '-config-file="%PROGRAMDATA%\nomad\conf\nomad.hcl'

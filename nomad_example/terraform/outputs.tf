@@ -3,10 +3,12 @@ output "IP_Addresses" {
 
 Client public IPs: ${join(", ", module.nomadconsul.client_public_ips)}
 Client private IPs: ${join(", ", module.nomadconsul.client_private_ips)}
+Windows Client public IPs: ${join(", ", module.nomadconsul.windows_client_public_ips)}
 Server public IPs: ${join(", ", module.nomadconsul.primary_server_public_ips)}
 Server private IPs: ${join(", ", module.nomadconsul.primary_server_private_ips)}
 
 Nomad bootstrap token: ${module.nomadconsul.bootstrap_token}
+Windows Client password: ${module.nomadconsul.windows_password}
 
 Alice (dev) token: ${nomad_acl_token.alice.secret_id}
 Accessor: ${nomad_acl_token.alice.accessor_id}

@@ -43,24 +43,6 @@ module "nomadconsul" {
   route_table_association_id = module.network.route_table_association_id
 }
 
-# Nomad namespace: dev
-resource "nomad_namespace" "dev" {
-  name        = "dev"
-  description = "Shared development environment."
-  depends_on = [
-    module.nomadconsul,
-  ]
-}
-
-# Nomad namespace: qa
-resource "nomad_namespace" "qa" {
-  name        = "qa"
-  description = "Shared QA environment."
-  depends_on = [
-    module.nomadconsul,
-  ]
-}
-
 # Nomad ACL policy: anonymous
 resource "nomad_acl_policy" "anonymous" {
   name        = "anonymous"

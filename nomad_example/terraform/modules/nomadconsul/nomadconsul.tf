@@ -309,7 +309,7 @@ resource "aws_instance" "client" {
   key_name               = var.key_name
   vpc_security_group_ids = [aws_security_group.primary.id]
   subnet_id              = var.subnet_id
-  count                  = var.client_count
+  count                  = 0 #var.client_count
 
   #depends_on             = ["aws_instance.primary"]
 
