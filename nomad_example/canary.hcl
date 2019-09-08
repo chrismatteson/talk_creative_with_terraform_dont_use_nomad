@@ -1,18 +1,21 @@
 job "eShop" {
   datacenters = ["dc1"]
   group "eShop" {
-     count = 5
-  task "eShop" {
-  driver = "raw_exec"
+     count = 3
+    task "eShop" {
+      driver = "raw_exec"
 
-  config {
-    command = "dotnet.exe ef database update -c catalogcontext -p ../Infrastructure/Infrastructure.csproj -s Web.csproj; dotnet.exe ef database update -c appidentitydbcontext -p ../Infrastructure/Infrastructure.csproj -s Web.csproj; dotnet.exe run"
+      artifact {
+        source = "https://github.com/chrismatteson/eShopOnWeb/archive/master.zip"
+        destination = "local/eshop"
+      }
+      config {
+        args = [
+          "-c",
+          "cd local/eshop/eShopOnWeb-master/src/web; & 'c:\\Program Files\\dotnet\\dotnet.exe' ef database update -c catalogcontext -p ../Infrastructure/Infrastructure.csproj -s Web.csproj; & 'c:\\Program Files\\dotnet\\dotnet.exe' ef database update -c appidentitydbcontext -p ../Infrastructure/Infrastructure.csproj -s Web.csproj; & 'c:\\Program Files\\dotnet\\dotnet.exe' run"
+        ]
+        command = "powershell.exe"
+      }
+    }
   }
-
-  artifact {
-    source = "https://github.com/chrismatteson/eShopOnWeb/archive/master.zip"
-    destination = "local/eshop"
-  }
-}
-}
 }
