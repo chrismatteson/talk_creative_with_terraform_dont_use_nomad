@@ -43,46 +43,6 @@ module "nomadconsul" {
   route_table_association_id = module.network.route_table_association_id
 }
 
-# Nomad ACL policy: anonymous
-resource "nomad_acl_policy" "anonymous" {
-  name        = "anonymous"
-  description = "restricted access for users without ACL tokens"
-  rules_hcl   = file("${path.module}/acls/anonymous.hcl")
-  depends_on  = [module.nomadconsul]
-}
-
-# Nomad ACL policy: dev
-resource "nomad_acl_policy" "dev" {
-  name        = "dev"
-  description = "access for users with dev ACL tokens"
-  rules_hcl   = file("${path.module}/acls/dev.hcl")
-  depends_on  = [module.nomadconsul]
-}
-
-# Nomad ACL policy: qa
-resource "nomad_acl_policy" "qa" {
-  name        = "qa"
-  description = "access for users with qa ACL tokens"
-  rules_hcl   = file("${path.module}/acls/qa.hcl")
-  depends_on  = [module.nomadconsul]
-}
-
-# Nomad ACL token: alice (dev)
-resource "nomad_acl_token" "alice" {
-  name       = "alice"
-  type       = "client"
-  policies   = ["dev"]
-  depends_on = [module.nomadconsul]
-}
-
-# Nomad ACL token: bob (qa)
-resource "nomad_acl_token" "bob" {
-  name       = "bob"
-  type       = "client"
-  policies   = ["qa"]
-  depends_on = [module.nomadconsul]
-}
-
 # Template File for stop_all_jobs.sh script
 data "template_file" "stop_all_jobs" {
   template = file("${path.module}/stop_all_jobs.sh")
